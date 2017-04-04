@@ -50,6 +50,7 @@ function getCaller() {
   stack = stack.slice(2)
 
   do {
+    // $FlowIgnoreNextLine because flow doesn't have definitions for stack.
     frame = stack.shift()
     file = frame && frame.getFileName()
   } while (stack.length && file === 'module.js')

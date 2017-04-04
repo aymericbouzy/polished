@@ -194,6 +194,7 @@ function getCaller() {
   stack = stack.slice(2);
 
   do {
+    // $FlowIgnoreNextLine because flow doesn't have definitions for stack.
     frame = stack.shift();
     file = frame && frame.getFileName();
   } while (stack.length && file === 'module.js');
@@ -389,6 +390,7 @@ var pxtoFactory$1 = function pxtoFactory$1(to) {
 var em = pxtoFactory$1('em');
 
 //      
+
 var ratioNames = {
   minorSecond: 1.067,
   majorSecond: 1.125,
@@ -436,17 +438,18 @@ function modularScale(steps) {
   var base = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '1em';
   var ratio = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'perfectFourth';
 
-  {
-    if (!steps) error$1('expects the number of steps as its first parameter. However, you did not pass one.');
-    if (typeof steps !== 'number') error$1('expects the number of steps as a number. However, you passed ' + steps + '(' + (typeof steps === 'undefined' ? 'undefined' : _typeof(steps)) + ') instead.');
-    if (typeof ratio === 'string' && !ratioNames[ratio]) error$1('expects a number or a predefined scale as its second parameter. However, you passed ' + ratio + '(' + (typeof ratio === 'undefined' ? 'undefined' : _typeof(ratio)) + ') instead.');
+  if (!steps) {
+    throw new Error('Please provide a number of steps to the modularScale helper.');
+  }
+  if (typeof ratio === 'string' && !ratioNames[ratio]) {
+    throw new Error('Please pass a number or one of the predefined scales to the modularScale helper as the ratio.');
   }
 
   var realBase = typeof base === 'string' ? stripUnit(base) : base;
   var realRatio = typeof ratio === 'string' ? ratioNames[ratio] : ratio;
 
-  {
-    if (typeof realBase === 'string') error$1('expects a number or em string as its second parameter when not using a predefined scale. However, you passed ' + realBase + ' instead.');
+  if (typeof realBase === 'string') {
+    throw new Error('Invalid value passed as base to modularScale, expected number or em string but got "' + base + '"');
   }
 
   return realBase * realRatio * steps + 'em';
@@ -1988,22 +1991,14 @@ var mix$1 = curry(mix);
  * @example
  * // Styles as object usage
  * const styles = {
-<<<<<<< HEAD
  *   background: opacify(0.1, 'rgba(255, 255, 255, 0.9)');
-=======
- *   background: opacify(0.1, '#fff');
->>>>>>> f70dce0... chore(errors): Updated message handling
  *   background: opacify(0.2, 'hsla(0, 0%, 100%, 0.5)'),
  *   background: opacify(0.5, 'rgba(255, 0, 0, 0.2)'),
  * }
  *
  * // styled-components usage
  * const div = styled.div`
-<<<<<<< HEAD
  *   background: ${opacify(0.1, 'rgba(255, 255, 255, 0.9)')};
-=======
- *   background: ${opacify(0.1, '#fff')};
->>>>>>> f70dce0... chore(errors): Updated message handling
  *   background: ${opacify(0.2, 'hsla(0, 0%, 100%, 0.5)')},
  *   background: ${opacify(0.5, 'rgba(255, 0, 0, 0.2)')},
  * `
